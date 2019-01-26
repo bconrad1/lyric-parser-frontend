@@ -2,25 +2,17 @@ import React from 'react';
 
 const SongArtistButtons = ({radioClick, isArtist, isSong}) => {
   return (
-    <div className={'search-form-radio-btn'}>
-      <form>
-        <label className={`${isSong
-          ? 'checked'
-          : ''} container`}><span className={'radio-label'}>{'Song'}</span>
-          <input type="radio" value="song" checked={isSong}
-                 onChange={radioClick}/>
-          <span className={'radio-btn'}/>
-        </label>
-        <label className={`${isArtist
-          ? 'checked'
-          : ''} container`}><span
-          className={'radio-label'}>{'Artist'}</span>
-          <input type="radio" value="artist" checked={isArtist}
-                 onChange={radioClick}/><span
-            className={'radio-btn'}/>
-        </label>
-      </form>
-    </div>
+      <div className="skill-toggle-container">
+        <div className="inner-container" onClick={radioClick}>
+          <div className= {`toggle ${isSong ? 'toggled' : ''}`}>
+            <p>Artist</p>
+          </div>
+          <div className={`toggle ${isArtist ? 'toggled' : ''}`}>
+            <p>Song</p>
+          </div>
+          <div className={`toggle-background ${isArtist ? 'toggled-right' : 'toggle-left'}`}/>
+        </div>
+      </div>
   );
 };
 

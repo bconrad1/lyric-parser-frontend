@@ -9,21 +9,20 @@ import {FaSearch} from 'react-icons/fa';
 
 class SearchForm extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(prevState.searched)
-    if (nextProps.songList.songs !== prevState.songs && prevState.searched) {
+    let searchText = prevState.currentSearch;
+    if (nextProps.songList.songs !== prevState.songs) {
       return ({
-        songs: nextProps.songList.songs,
-        artists: []
+        songs: searchText ? nextProps.songList.songs : [],
+        artists: [],
       });
     }
-
-    if (nextProps.artistList.artists !== prevState.artists && prevState.searched) {
+    if (nextProps.artistList.artists !== prevState.artists &&
+      prevState.searched) {
       return ({
-        artists: nextProps.artistList.artists,
-        songs: []
+        artists: searchText ? nextProps.artistList.artists : [],
+        songs: [],
       });
     }
-
     return null;
   }
 
@@ -43,42 +42,37 @@ class SearchForm extends Component {
   onKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      this.handleSubmit();
-    }
-  };
-
-  handleSubmit = () => {
-    let searchText = this.state.currentSearch;
-
-    if (searchText) {
-      if (this.state.isArtist) {
-        this.props.artistActions.getArtists(searchText);
-      } else {
-        this.props.songActions.getSongs(searchText);
-      }
-
-      this.setState({
-        searched: true,
-      });
     }
   };
 
   handleInput = (event) => {
-    this.setState({
-      currentSearch: event.target.value,
-    });
+      let searchText = event.target.value;
+      if (searchText) {
+        if (this.state.isArtist) {
+          this.props.artistActions.getArtists(searchText);
+        } else {
+          this.props.songActions.getSongs(searchText);
+        }
+        this.setState({
+          searched: true
+        })
+      }
+      this.setState({
+        songs: [],
+        artists: [],
+        currentSearch: event.target.value,
+      });
   };
 
   handleRadioCheck = (event) => {
-    let checkValue = event.target.value;
     let {isSong, isArtist} = this.state;
     this.setState({
-      isSong: checkValue === 'song' && !isSong,
-      isArtist: checkValue === 'artist' && !isArtist,
+      isSong: !isSong,
+      isArtist: !isArtist,
       currentSearch: '',
       songs: [],
       artist: [],
-      searched: false
+      searched: false,
     });
   };
 
@@ -104,8 +98,6 @@ class SearchForm extends Component {
                        value={currentSearchTerm} onChange={this.handleInput}
                        onKeyDown={this.onKeyDown}/>
               </div>
-              <div onClick={this.handleSubmit} className={'submit-btn'}>
-                <FaSearch/></div>
             </form>
           </div>
         </div>
