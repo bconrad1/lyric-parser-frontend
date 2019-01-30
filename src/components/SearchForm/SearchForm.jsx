@@ -46,25 +46,25 @@ class SearchForm extends Component {
   };
 
   handleInput = (event) => {
-      let searchText = event.target.value;
-      if (searchText) {
-        if (this.state.isArtist) {
-          this.props.artistActions.getArtists(searchText);
-        } else {
-          this.props.songActions.getSongs(searchText);
-        }
-        this.setState({
-          searched: true
-        })
+    let searchText = event.target.value;
+    if (searchText) {
+      if (this.state.isArtist) {
+        this.props.artistActions.getArtists(searchText);
+      } else {
+        this.props.songActions.getSongs(searchText);
       }
       this.setState({
-        songs: [],
-        artists: [],
-        currentSearch: event.target.value,
+        searched: true,
       });
+    }
+    this.setState({
+      songs: [],
+      artists: [],
+      currentSearch: event.target.value,
+    });
   };
 
-  handleRadioCheck = (event) => {
+  handleRadioCheck = () => {
     let {isSong, isArtist} = this.state;
     this.setState({
       isSong: !isSong,
@@ -93,8 +93,8 @@ class SearchForm extends Component {
             <form autoComplete="off">
               <div className={'search-form'}>
                 <input type="text" name="artist" placeholder={this.state.isSong
-                  ? 'SEARCH SONG'
-                  : 'SEARCH ARTIST'}
+                  ? 'SONG'
+                  : 'ARTIST'}
                        value={currentSearchTerm} onChange={this.handleInput}
                        onKeyDown={this.onKeyDown}/>
               </div>
@@ -103,7 +103,8 @@ class SearchForm extends Component {
         </div>
         <SearchResults displayList={this.state.isArtist ? artistList : songList}
                        isSongList={this.state.isSong}
-                       searched={this.state.searched}/>
+                       searched={this.state.searched}
+                       setCurrentPage={this.props.setCurrentPage}/>
       </Fragment>
     );
   }

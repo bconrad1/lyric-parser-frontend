@@ -1,20 +1,34 @@
-import React, {Component} from 'react';
-import ArtistSearch from './SearchForm/SearchForm';
+import React, {Component, Fragment} from 'react';
+import SearchForm from './SearchForm/SearchForm';
 import NavigationHeader from './Navigation/NavigationHeader';
+
 class LyricParser extends Component {
 
-  constructor(){
+  constructor() {
     super();
     this.state = {
-      currentPage: 'home'
-    }
+      currentPage: 'search',
+      currentPages: ['search']
+    };
   }
+
+  setCurrentPage = (currentPage) => {
+    this.setState({
+      currentPage: currentPage,
+      currentPages: [...this.state.currentPages, currentPage]
+    });
+  };
+
   render() {
+    let {currentPages, currentPage} = this.state;
+    console.log(currentPages)
     return (
-      <div className='lyric-parser-body'>
-        {/*<NavigationHeader currentPage={this.state.currentPage}/>*/}
-        <ArtistSearch/>
-      </div>
+      <Fragment>
+        <NavigationHeader currentPage={currentPage} currentPages={currentPages}/>
+        <div className='lyric-parser-body'>
+          <SearchForm setCurrentPage={this.setCurrentPage}/>
+        </div>
+      </Fragment>
     );
   }
 };
