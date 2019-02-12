@@ -1,5 +1,9 @@
 import initialState from '../initialState';
-import {GET_SONG_DATA, RECEIVE_SONG_DATA} from '../actions/actionTypes';
+import {
+  GET_SONG_DATA,
+  RECEIVE_LYRIC_DATA,
+  RECEIVE_SONG_DATA,
+} from '../actions/actionTypes';
 
 export default function songInfo(state = initialState.songs, action) {
   let newState;
@@ -7,8 +11,10 @@ export default function songInfo(state = initialState.songs, action) {
     case GET_SONG_DATA:
       return action;
     case RECEIVE_SONG_DATA:
-      newState = action.songs;
+      newState = {songList: action.songs, lyrics: {}};
       return newState;
+    case RECEIVE_LYRIC_DATA:
+      return {songList: state.songList, lyrics: action.lyrics};
     default:
       return state;
   }

@@ -7,7 +7,6 @@ export default function artistInfo(state = initialState.artists, action) {
     case GET_ARTIST_DATA:
       return action;
     case RECEIVE_ARTIST_DATA:
-      console.log('action', action)
       newState = action.artists;
       return newState;
     default:

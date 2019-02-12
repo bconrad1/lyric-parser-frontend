@@ -1,4 +1,4 @@
 export default{
   artists: {},
-  songs: {}
+  songs: {songList:{}, lyrics: {}}
 };

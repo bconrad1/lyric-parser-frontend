@@ -5,19 +5,17 @@ import * as songSearchAction from '../../redux/actions/songAction';
 import {bindActionCreators} from 'redux';
 import SearchResults from './SearchResults';
 import SongArtistButtons from './SongArtistButtons';
-import {FaSearch} from 'react-icons/fa';
 
 class SearchForm extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     let searchText = prevState.currentSearch;
-    if (nextProps.songList.songs !== prevState.songs) {
+    if (nextProps.songList.songs !== prevState.songs && prevState.isSong) {
       return ({
         songs: searchText ? nextProps.songList.songs : [],
         artists: [],
       });
     }
-    if (nextProps.artistList.artists !== prevState.artists &&
-      prevState.searched) {
+    if (nextProps.artistList.artists !== prevState.artists && prevState.isArtist) {
       return ({
         artists: searchText ? nextProps.artistList.artists : [],
         songs: [],
@@ -66,6 +64,7 @@ class SearchForm extends Component {
 
   handleRadioCheck = () => {
     let {isSong, isArtist} = this.state;
+
     this.setState({
       isSong: !isSong,
       isArtist: !isArtist,
@@ -113,7 +112,7 @@ class SearchForm extends Component {
 function mapStateToProps(state) {
   return {
     artistList: state.artistInfo,
-    songList: state.songInfo,
+    songList: state.songInfo.songList,
   };
 }
 

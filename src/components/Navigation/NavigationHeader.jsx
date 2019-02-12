@@ -9,7 +9,7 @@ const NavigationHeader = ({currentPage, currentPages}) => {
       <div className={'page-container'}>
         {_.map(currentPages, (page, index) => {
           return (
-            <Fragment>
+            <Fragment key={index}>
               {index > 0 ? <span className={'navigation-break'}>{'-'}</span> : null}
               <div className={`${currentPage === page
                 ? 'active'
