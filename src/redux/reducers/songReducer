@@ -14,7 +14,7 @@ export default function songInfo(state = initialState.songs, action) {
       newState = {songList: action.songs, lyrics: {}};
       return newState;
     case RECEIVE_LYRIC_DATA:
-      return {songList: state.songList, lyrics: action.lyrics};
+      return {songList: state.songList, lyrics: action.songs};
     default:
       return state;
   }

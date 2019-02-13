@@ -30,20 +30,19 @@ export function getSongs(searchTerm) {
 
 export function getLyrics(songId) {
   return dispatch => {
-    return fetch(`http://localhost:3001/api/songs/lyrics/${songId}`, {
+    return fetch(`http://localhost:3001/api/songs/lyrics/${songId}?removeCommonWords=true`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
       },
+
     }).then(response => {
-      console.log(response)
-      if (response.status === 200) {
+       if (response.status === 200) {
         return response.json();
       } else {
         return ({});
       }
     }).then(json => {
-      console.log('JSON', json)
       dispatch(receiveLyrics(json));
     }).catch(err => console.log(err));
   };
