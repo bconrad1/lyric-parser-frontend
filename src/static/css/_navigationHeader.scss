@@ -1,12 +1,12 @@
-.navigation-header{
+.navigation-header {
   height: 50px;
   background-color: $primaryColorDarkest;
   text-align: center;
 
-  .navigation-name{
+  .navigation-name {
     color: $primaryColorMediumLight;
     text-align: left;
-    position:absolute;
+    position: absolute;
     left: 50px;
     vertical-align: middle;
     line-height: 50px;
@@ -16,7 +16,7 @@
     font-size: 24px
   }
 
-  .header-item{
+  .header-item {
     display: inline-block;
     vertical-align: middle;
     line-height: 50px;
@@ -26,15 +26,18 @@
     color: $primaryColorMedium;
   }
 
-  .active{
-    color:$primaryColorOffWhite
+  .active {
+    color: $primaryColorOffWhite
   }
 
-  .navigation-break{
+  .navigation-break {
     color: $primaryColorOffWhite;
     margin: 0 15px;
   }
 
-
+  .header-item:hover {
+    cursor: pointer;
+    color: $primaryColorWhite;
+  }
 
 }

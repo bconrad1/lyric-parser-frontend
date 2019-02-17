@@ -3,20 +3,46 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import {
+  Hint,
   HorizontalGridLines,
   MarkSeries,
   VerticalGridLines,
   XYPlot,
 } from 'react-vis';
-
+function getRandomData() {
+  return new Array(100).fill(0).map(row => ({
+    x: Math.random() * 10,
+    y: Math.random() * 20,
+    size: Math.random() * 10,
+    color: Math.random() * 10,
+    opacity: Math.random() * 0.5 + 0.5
+  }));
+}
 export class SongBreakdown extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       height: (75 / 100) * window.innerHeight,
       width: (85 / 100) * window.innerWidth,
+      value: false,
+      data: this.getVisData(props.lyrics),
     };
   }
+
+  getVisData = (lyrics) => {
+    let lyricsArray = lyrics.words;
+    return _.map(lyricsArray, (word) => {
+      return {
+        x: Math.random() * 10,
+        y: Math.random() * 20,
+        size: 10 * word.count,
+        color: Math.random() * 10,
+        opacity: Math.random() * 0.5 + 0.5,
+        word: word.word,
+        wordCount: word.count,
+      };
+    });
+  };
 
   componentDidMount() {
     window.addEventListener('resize', this.updateDimensions);
@@ -32,48 +58,38 @@ export class SongBreakdown extends Component {
     });
   };
 
-  getVisData = () => {
-    let lyricsArray = this.props.lyrics.words;
-    return _.map(lyricsArray, (word) => {
-      return {
-        x: Math.random() * 10,
-        y: Math.random() * 20,
-        size: 10 * word.count,
-        color: Math.random() * 10,
-        opacity: Math.random() * 0.5 + 0.5,
-        word: word.word,
-      };
-    });
-  };
-
-  handleMouseOver = (value) => {
-    console.log(value);
-  };
-
   render() {
     let lyrics = this.props.lyrics;
-    let visData = this.getVisData();
-    if (!visData || !lyrics) {
+    if (!this.state.data || !lyrics) {
       return null;
     }
     let markProps = {
       animation: true,
-      sizeRange: [5, 25],
+      sizeRange: [5, 30],
       opacityType: 'literal',
-      data: visData,
-      onNearestXY: value => this.handleMouseOver,
+      data: this.state.data,
     };
+
     return (
       <div className={'lyric-container'}>
         <div className={'song-title'}>
           {lyrics.songFullTitle}
         </div>
+        <div className={'break-line'}>
+        <div>
+
+        </div>
+      </div>
         <div className={'visualization-container'}>
           <XYPlot className={'visualization-graph-bar'} width={this.state.width}
-                  height={this.state.height}>
+                  height={this.state.height}
+                  onMouseLeave={() => this.setState({value: false})}>
             <VerticalGridLines/>
             <HorizontalGridLines/>
-            <MarkSeries {...markProps}/>
+            <MarkSeries {...markProps}
+                        onValueMouseOver={(dataPoint, event) => {
+
+                        }}/>
           </XYPlot>
         </div>
       </div>);

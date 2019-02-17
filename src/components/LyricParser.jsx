@@ -9,6 +9,7 @@ class LyricParser extends Component {
     this.state = {
       currentPage: 'search',
       currentPages: ['search'],
+      defaultPage: 'search',
     };
   }
 
@@ -20,21 +21,29 @@ class LyricParser extends Component {
   };
 
   setCurrentPage = (currentPage) => {
+    let {defaultPage, currentPages} = this.state;
+    if (!currentPages.includes(currentPage)) {
+      return this.setState({
+        currentPage: currentPage,
+        currentPages: [...currentPages, currentPage],
+      });
+    }
+    let newPages = currentPage === defaultPage ? [defaultPage] : currentPages;
+
     this.setState({
       currentPage: currentPage,
-      currentPages: [...this.state.currentPages, currentPage],
+      currentPages: newPages,
     });
   };
 
   getCurrentPage = () => {
     let {currentPage} = this.state;
-
     if (currentPage === 'search') {
       return <SearchForm setCurrentPage={this.setCurrentPage}
                          resetCurrentPage={this.resetCurrentPage}/>;
     }
-    if(currentPage === 'song') {
-      return <SongBreakdown/>
+    if (currentPage === 'song') {
+      return <SongBreakdown/>;
     }
     return null;
   };
@@ -44,7 +53,8 @@ class LyricParser extends Component {
     return (
       <Fragment>
         <NavigationHeader currentPage={currentPage}
-                          currentPages={currentPages}/>
+                          currentPages={currentPages}
+                          setCurrentPage={this.setCurrentPage}/>
         <div className='lyric-parser-body'>
           {this.getCurrentPage()}
         </div>
