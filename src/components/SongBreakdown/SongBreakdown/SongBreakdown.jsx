@@ -3,13 +3,11 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import {
-  Hint,
   HorizontalGridLines,
   MarkSeries,
   VerticalGridLines,
   XYPlot,
 } from 'react-vis';
-import LyricInformationPanel from './LyricInformationPanel';
 
 function getRandomData() {
   return new Array(100).fill(0).map(row => ({
@@ -28,12 +26,17 @@ export class SongBreakdown extends Component {
       height: (75 / 100) * window.innerHeight,
       width: (85 / 100) * window.innerWidth,
       value: false,
-      data: this.getVisDataUnordered(props.lyrics),
+      currentMax: props.currentMax,
+      currentMin: props.currentMin,
+      data: this.getVisDataUnordered(props.lyrics, props.currentMin,
+        props.currentMax),
     };
   }
 
-  getVisDataUnordered = (lyrics) => {
-    let lyricsArray = lyrics.words;
+  getVisDataUnordered = (lyrics, min, max) => {
+    let lyricsArray = _.filter(lyrics.words, word => {
+      return word.count >= min && word.count <= max;
+    });
     return _.map(lyricsArray, (word) => {
       return {
         x: Math.random() * 10,
@@ -72,6 +75,8 @@ export class SongBreakdown extends Component {
       opacityType: 'literal',
       data: this.state.data,
     };
+
+    console.log(this.props.currentMin, this.props.currentMax);
 
     return (
       <div className={'lyric-container'}>
