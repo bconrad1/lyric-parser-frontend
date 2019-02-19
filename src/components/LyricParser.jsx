@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import SearchForm from './SearchForm/SearchForm';
 import NavigationHeader from './Navigation/NavigationHeader';
-import SongBreakdown from './SongBreakdown/SongBreakdown';
+import LyricInformation from './SongBreakdown/LyricInformation';
 
 class LyricParser extends Component {
   constructor() {
@@ -43,7 +43,7 @@ class LyricParser extends Component {
                          resetCurrentPage={this.resetCurrentPage}/>;
     }
     if (currentPage === 'song') {
-      return <SongBreakdown/>;
+      return <LyricInformation/>;
     }
     return null;
   };

@@ -1,19 +1,17 @@
 @import './_variables.scss';
 
+.lyric-information-container {
+  height: 100%;
+}
+
 .song-title {
   font-size: 32px;
   font-weight: 700;
-  color: $primaryColorMediumLight;
+  color: $primaryColorOffWhite;
   text-transform: uppercase;
   text-align: center;
   width: 50%;
-  margin: 100px auto 25px auto;
-}
-.break-line{
-  width: 30%;
-  height: 1px;
-  background-color: $primaryColorMediumLight;
-  margin: 35px auto 100px auto;
+  margin: 50px auto 15px auto;
 }
 
 .visualization-graph-bar {
@@ -22,5 +20,48 @@
   }
   .rv-xy-plot__inner {
     overflow: visible;
+  }
+}
+
+.lyric-information-container {
+  text-align: center;
+
+  .lyric-info-item {
+    font-size: 18px;
+    font-weight: 700;
+    color: $primaryColorMediumLight;
+    text-transform: uppercase;
+    display: inline-block;
+    margin: 10px 20px 0px 20px;
+    span {
+      color: $primaryColorAccent;
+    }
+  }
+}
+
+.filter-container {
+  height: 50px;
+  margin: 50px auto;
+  border-radius: 0 0 5px 5px;
+  .form-input-container{
+    display: inline-block;
+    margin: 5px 10px;
+  }
+  .form-input-count{
+    background: $primaryColorDarkest;
+    -webkit-appearance: none;
+    border: none;
+    border-bottom: 1px solid $primaryColorOffWhite;
+    border-radius:2px;
+    font-size: 14px;
+    width: 50px;
+    color: $primaryColorOffWhite;
+    padding: 5px;
+  }
+  .form-input-label{
+    color: $primaryColorWhite;
+    text-transform: uppercase;
+    margin-right: 15px;
+    text-align: left;
   }
 }

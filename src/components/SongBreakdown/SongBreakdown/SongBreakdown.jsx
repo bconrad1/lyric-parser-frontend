@@ -9,15 +9,18 @@ import {
   VerticalGridLines,
   XYPlot,
 } from 'react-vis';
+import LyricInformationPanel from './LyricInformationPanel';
+
 function getRandomData() {
   return new Array(100).fill(0).map(row => ({
     x: Math.random() * 10,
     y: Math.random() * 20,
     size: Math.random() * 10,
     color: Math.random() * 10,
-    opacity: Math.random() * 0.5 + 0.5
+    opacity: Math.random() * 0.5 + 0.5,
   }));
 }
+
 export class SongBreakdown extends Component {
   constructor(props) {
     super(props);
@@ -25,11 +28,11 @@ export class SongBreakdown extends Component {
       height: (75 / 100) * window.innerHeight,
       width: (85 / 100) * window.innerWidth,
       value: false,
-      data: this.getVisData(props.lyrics),
+      data: this.getVisDataUnordered(props.lyrics),
     };
   }
 
-  getVisData = (lyrics) => {
+  getVisDataUnordered = (lyrics) => {
     let lyricsArray = lyrics.words;
     return _.map(lyricsArray, (word) => {
       return {
@@ -72,14 +75,6 @@ export class SongBreakdown extends Component {
 
     return (
       <div className={'lyric-container'}>
-        <div className={'song-title'}>
-          {lyrics.songFullTitle}
-        </div>
-        <div className={'break-line'}>
-        <div>
-
-        </div>
-      </div>
         <div className={'visualization-container'}>
           <XYPlot className={'visualization-graph-bar'} width={this.state.width}
                   height={this.state.height}
