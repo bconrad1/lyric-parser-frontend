@@ -22,7 +22,10 @@ export default class WordFilter extends Component {
       <div className={'filter-container'}>
         <form>
           <div className={'btn'}
-               onClick={() => this.setState({currentMax: max, currentMin: min}).bind(this)}
+               onClick={() => {
+                 this.setState({currentMax: max, currentMin: min});
+                 this.props.handleFilter(min, max);
+               }}
           >{'Reset'}</div>
           <div className={'form-input-container'}>
             <label className={'form-input-label'}>Min</label>

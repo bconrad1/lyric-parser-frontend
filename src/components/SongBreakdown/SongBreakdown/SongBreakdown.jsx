@@ -8,36 +8,43 @@ import {
   VerticalGridLines,
   XYPlot,
 } from 'react-vis';
-
-function getRandomData() {
-  return new Array(100).fill(0).map(row => ({
-    x: Math.random() * 10,
-    y: Math.random() * 20,
-    size: Math.random() * 10,
-    color: Math.random() * 10,
-    opacity: Math.random() * 0.5 + 0.5,
-  }));
-}
+import ToolTip from './ToolTip';
 
 export class SongBreakdown extends Component {
   constructor(props) {
     super(props);
+    let data = this.getVisDataUnordered(props.lyrics, props.currentMin,
+      props.currentMax);
     this.state = {
       height: (75 / 100) * window.innerHeight,
       width: (85 / 100) * window.innerWidth,
       value: false,
       currentMax: props.currentMax,
       currentMin: props.currentMin,
-      data: this.getVisDataUnordered(props.lyrics, props.currentMin,
-        props.currentMax),
+      originalData: data,
+      data,
+      showToolTip: false,
     };
   }
 
-  getVisDataUnordered = (lyrics, min, max) => {
-    let lyricsArray = _.filter(lyrics.words, word => {
-      return word.count >= min && word.count <= max;
+  componentDidUpdate(prevProps) {
+    if (this.props.currentMax !== prevProps.currentMax ||
+      this.props.currentMin !== prevProps.currentMin) {
+      this.setState({
+        data: this.refineVisualizationDate(this.props.currentMin,
+          this.props.currentMax),
+      });
+    }
+  }
+
+  refineVisualizationDate = (min, max) => {
+    return _.filter(this.state.originalData, word => {
+      return word.wordCount >= min && word.wordCount <= max;
     });
-    return _.map(lyricsArray, (word) => {
+  };
+
+  getVisDataUnordered = (lyrics) => {
+    return _.map(lyrics.words, (word) => {
       return {
         x: Math.random() * 10,
         y: Math.random() * 20,
@@ -64,32 +71,56 @@ export class SongBreakdown extends Component {
     });
   };
 
+  onMouseOver = (node, event) => {
+    if(!this.state.showToolTip) {
+      this.setState({
+        showToolTip: true,
+        toolTipX: event.event.clientX,
+        toolTipY: event.event.clientY,
+        toolTipWord: node.word,
+        toolTipWordCount: node.wordCount,
+      });
+    }
+  };
+  onMouseOut = () => {
+    this.setState({
+      showToolTip: false,
+    });
+  };
+
   render() {
-    let lyrics = this.props.lyrics;
+    let {lyrics, currentMin, currentMax} = this.props;
     if (!this.state.data || !lyrics) {
       return null;
     }
-    let markProps = {
-      animation: true,
-      sizeRange: [5, 30],
-      opacityType: 'literal',
-      data: this.state.data,
-    };
 
-    console.log(this.props.currentMin, this.props.currentMax);
+    let sizeRange = [5, 30];
+    if (currentMin >= currentMax / 2) {
+      sizeRange = [15, 50];
+    }
+    let markProps = {
+      animation: false,
+      sizeRange: sizeRange,
+      opacityType: 'literal',
+    };
 
     return (
       <div className={'lyric-container'}>
         <div className={'visualization-container'}>
+          {this.state.showToolTip ? <ToolTip
+            xCoord={this.state.toolTipX}
+            yCoord={this.state.toolTipY}
+            word={this.state.toolTipWord}
+            wordCount={this.state.toolTipWordCount}/> : null}
           <XYPlot className={'visualization-graph-bar'} width={this.state.width}
                   height={this.state.height}
                   onMouseLeave={() => this.setState({value: false})}>
             <VerticalGridLines/>
             <HorizontalGridLines/>
             <MarkSeries {...markProps}
-                        onValueMouseOver={(dataPoint, event) => {
-
-                        }}/>
+                        data={this.state.data}
+                        onValueMouseOver={this.onMouseOver}
+                        onValueMouseOut={this.onMouseOut}/>
           </XYPlot>
         </div>
       </div>);

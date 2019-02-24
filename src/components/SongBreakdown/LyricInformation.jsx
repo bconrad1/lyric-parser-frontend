@@ -33,6 +33,7 @@ export class LyricInformation extends Component {
     }
     let minWordCount = _.last(lyrics.words).count;
     let maxWordCount = _.first(lyrics.words).count;
+
     return (
       <div className={'lyric-information-container'}>
         <LyricInformationPanel

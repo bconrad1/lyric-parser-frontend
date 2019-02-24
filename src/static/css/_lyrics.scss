@@ -84,3 +84,18 @@
     color: $primaryColorWhite;
   }
 }
+
+.tool-tip-container{
+  padding:10px;
+  position:absolute;
+  background: white;
+  border-radius: 5px;
+  text-align: left;
+
+  .tool-tip-text{
+    display: block;
+    text-transform: uppercase;
+    font-size: 12px;
+
+  }
+}
